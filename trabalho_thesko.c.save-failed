@@ -1,0 +1,150 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+#define ID 10
+#define NOME 100
+
+/*Registro para Produto*/
+
+typedef struct produto{
+    int id[ID];
+    char nome[NOME];
+    float preco;
+    int qtd;
+}produto;
+
+/*Registro para Cliente*/
+
+typedef struct cliente{
+    int id[ID];
+    char nome[NOME];
+    int cpf[11];
+}cliente;
+
+/*Registro para Nota Fiscal*/
+
+typedef struct nota{
+    int num[ID];
+    int idCliente[ID];
+    char produto[NOME];
+    int qtd;
+}nota;
+
+/*Deaclaração de funções*/
+
+produto cadastrarProduto();
+
+/*Função principal*/
+
+int main() {
+    produto vetProd[500];
+    cliente cl;
+    nota nf;
+    int op = 0, x = 1, i = 0, consProd;
+    char opProd;
+
+    /*Menu de opções principal*/
+    while (op != 8){
+        system("cls");
+        printf("1 - Cadastrar produto\n");
+        printf("2 - Consultar produto\n");
+        printf("3 - Listar todos os produtos\n");
+        printf("4 - Cadastrar cliente\n");
+        printf("5 - Consultar cliente\n");
+        printf("6 - Listar todos os clientes\n");
+        printf("7 - Realizar venda\n");
+        printf("8 - Sair\n");
+        printf("\nDigite a opcao desejada: ");
+        scanf("%d", &op);
+
+        /*Escolhas de opções*/
+
+        switch (op) {
+            case 1 :
+                while (x <= 50){
+                    system("cls");
+                    cadastrarProduto();
+                    fflush(stdin);
+                    printf("\nDeseja cadastrar outro produto? S/N\n");
+                    opProd = getche();
+
+                    if (opProd == 'S' || opProd == 's'){
+                        x++;
+                    } else
+                        if (opProd == 'N' || opProd == 'n'){
+                            system("cls");
+                            break;
+                        } else {
+                            system("cls");
+                            printf("Opcao invalida!\n\n");
+                            system("pause");
+                        }
+                }
+                break;
+
+            case 2 :
+                system("cls");
+
+                printf("1 - Busca por nome\n");
+                printf("2 - Busca por ID\n");
+                printf("3 - Voltar\n\n");
+                printf("\nDigite a opcao desejada: ");
+                scanf("%d", &consProd);
+
+                switch (consProd) {
+                    case 1 :
+                        printf("Digite o nome: ");
+
+                    case 2 :
+                    case 3 :
+                    default :
+
+
+
+
+                }
+            case 3 :
+            case 4 :
+            case 5 :
+            case 6 :
+            case 7 :
+            case 8 :
+                system("cls");
+                printf("Logout realizado com sucesso.\n");
+                break;
+
+            default :
+                system("cls");
+                printf("\nOpcao invalida!\n\n");
+                system("pause");
+                break;
+        }
+    }
+
+
+    return 0;
+}
+
+/*Função para cadastrar produto*/
+
+produto cadastrarProduto(){
+    produto prod;
+    int i = 0;
+
+    printf("Digite o ID: ");
+    scanf("%d", &prod.id);
+    fflush(stdin);
+    printf("Digite o nome: ");
+    gets(prod.nome);
+    printf("Informe o preco: R$ ");
+    scanf("%f", &prod.preco);
+    printf("Informe a quantidade: ");
+    scanf("%d", &prod.qtd);
+
+}
+
+produto consultarProduto(char nome[NOME]){
+
+
+}
