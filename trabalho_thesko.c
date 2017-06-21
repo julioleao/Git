@@ -8,7 +8,7 @@
 // Registro para Produto
 
 typedef struct produto{
-    int id[ID];
+    int id;
     char nome[NOME];
     float preco;
     int qtd;
@@ -33,15 +33,15 @@ typedef struct nota{
 
 // Deaclaração de funções
 
-produto cadastrarProduto(int p);
+produto cadastrarProduto(produto prod[], int p);
 produto consultarProduto(int p, char nome[NOME]);
 int validarCpf(char cpf[12]);
 
 // Função principal
 
 int main() {
-    produto vetProd[500];
-    cliente cl;
+    produto vetProd[50];
+    cliente cl[20];
     nota nf;
     int op = 0, x = 1, i = 0, consProd = 0, p = 0;
     char opProd, nomeProd[NOME], cpf[12];
@@ -67,25 +67,28 @@ int main() {
         switch (op) {
             // Cadastrar produto
             case 1 :
-                while (x <= 50){
-                    system("cls");
-                    cadastrarProduto(p);
-                    p ++;
-                    fflush(stdin);
-                    printf("\nDeseja cadastrar outro produto? S/N\n");
-                    opProd = getche();
+                while (p < 50){
+                    if(p < 50){
+                        cadastrarProduto(vetProd,p);
+                        p ++;
+                        fflush(stdin);
+                        printf("\nDeseja cadastrar outro produto? S/N\n");
+                        opProd = getche();
 
-                    if (opProd == 'S' || opProd == 's'){
-                        x++;
-                    } else
-                        if (opProd == 'N' || opProd == 'n'){
-                            system("cls");
-                            break;
-                        } else {
-                            system("cls");
-                            printf("Opcao invalida!\n\n");
-                            system("pause");
-                        }
+                        if (opProd == 'S' || opProd == 's'){
+
+                        } else
+                            if (opProd == 'N' || opProd == 'n'){
+                                system("cls");
+                                break;
+                            } else {
+                                system("cls");
+                                printf("Opcao invalida!\n\n");
+                                system("pause");
+                            }
+                    } else {
+                        printf("Atingido a quantidade maxima de cadastro.\nFavor volte e exclua algum produto pelo menu:\n3 - Listar todos os produtos\n");
+                    }
                 }
                 break;
 
@@ -161,24 +164,27 @@ int main() {
 
 // Função para cadastrar produto
 
-produto cadastrarProduto(int p){
-    produto prod[50];
+produto cadastrarProduto(produto prod[], int p){
+    int i = 0;
 
-    printf("Digite o ID: ");
-    scanf("%d", &prod[p].id);
-    fflush(stdin);
-    printf("Digite o nome: ");
-    gets(prod[p].nome);
-    printf("Informe o preco: R$ ");
-    scanf("%f", &prod[p].preco);
-    printf("Informe a quantidade: ");
-    scanf("%d", &prod[p].qtd);
+    for(i = p; i < 50; i++){
+        printf("Digite o ID: ");
+        scanf("%d", &prod[i].id);
+        fflush(stdin);
+        printf("Digite o nome: ");
+        gets(prod[i].nome);
+        printf("Informe o preco: R$ ");
+        scanf("%f", &prod[i].preco);
+        printf("Informe a quantidade: ");
+        scanf("%d", &prod[i].qtd);
+        break;
+    }
 
 }
 
 // Função para consultar produto
 
-produto consultarProduto(int p, char nome[NOME]){
+produto consultarProduto(int p, char nome[]){
     int i = 0;
 
 
