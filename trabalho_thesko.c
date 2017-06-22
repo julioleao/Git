@@ -49,7 +49,7 @@ int main() {
     produto vetProd[50];
     cliente cl[20];
     nota nf;
-    int op = 0, x = 1, i = 0, consProd = 0, consCl = 0, p = 0, id = 0, c = 0;
+    int op = 0, x = 1, i = 0, consProd = 0, consCl = 0, p = 0, id = 0, c = 0, opVenda = 0;
     char opProd, opCl, nomeProd[NOME], nomeCl[NOME], cpf[12];
 
     // Menu de opções principal
@@ -61,7 +61,7 @@ int main() {
         printf("4 - Cadastrar cliente\n");
         printf("5 - Consultar cliente\n");
         printf("6 - Listar todos os clientes\n");
-        printf("7 - Realizar venda\n");
+        printf("7 - Vendas\n");
         printf("8 - Sair\n");
         printf("\nDigite a opcao desejada: ");
         scanf("%d", &op);
@@ -140,6 +140,7 @@ int main() {
                 }
                 break;
 
+            // Lista de produto em ordem alfabética
             case 3 :
                 ordenacaoProd(p, vetProd);
                 printf("\nPressione ENTER para voltar.");
@@ -186,6 +187,7 @@ int main() {
                 }
                 break;
 
+            // Consultar cliente
             case 5 :
                 while (consCl != 1 || consCl != 2 || consCl != 3){
                     printf("1 - Busca por nome\n");
@@ -226,6 +228,7 @@ int main() {
                 }
                 break;
 
+            // Lista de clientes em ordem alfabética
             case 6 :
                 ordenacaoCl(c, cl);
                 printf("\nPressione ENTER para voltar.");
@@ -233,10 +236,50 @@ int main() {
                 system("cls");
                 break;
 
+            // Realizar venda
             case 7 :
+                while(opVenda < 0){
+                    printf("1 - Realizar vendas\n");
+                    printf("2 - Consultar NFs\n");
+                    printf("3 - Consultar estoque\n");
+                    printf("4 - Consultar cliente\n");
+                    printf("5 - Voltar\n");
+                    printf("Informe a opaco desejada: ");
+                    scanf("%d", &opVenda);
 
+                    if(opVenda == 1){
+
+                    } else
+                        if(opVenda == 2){
+
+                        } else
+                            if(opVenda == 3){
+                                ordenacaoProd(p, vetProd);
+                                printf("\nPressione ENTER para voltar.");
+                                getchar();
+                                system("cls");
+                            } else
+                                if (opVenda == 4){
+                                    ordenacaoCl(c, cl);
+                                    printf("\nPressione ENTER para voltar.");
+                                    getchar();
+                                    system("cls");
+                                    break;
+                                } else
+                                    if (opVenda == 5){
+                                        break;
+                                    } else {
+                                        printf("\nOpcao invalida!\n\n");
+                                        printf("\nPressione ENTER para voltar.");
+                                        getchar();
+                                        system("cls");
+                                    }
+
+
+                }
                 break;
 
+            // Sair do sistema
             case 8 :
                 printf("Logout realizado com sucesso.\n");
                 break;
