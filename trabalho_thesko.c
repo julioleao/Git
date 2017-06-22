@@ -17,9 +17,9 @@ typedef struct produto{
 // Registro para Cliente
 
 typedef struct cliente{
-    int id[ID];
+    int id;
     char nome[NOME];
-    int cpf[11];
+    char cpf[12];
 }cliente;
 
 // Registro para Nota Fiscal
@@ -34,8 +34,12 @@ typedef struct nota{
 // Deaclaração de funções
 
 produto cadastrarProduto(produto prod[], int p);
-produto consultarProduto(int p, char nome[NOME]);
-int validarCpf(char cpf[12]);
+produto consultarProduto(char nome[], produto prod[]);
+produto consultarProdutoId(int id, produto prod[]);
+int validarCpf(int c, cliente cl[]);
+cliente cadastrarCliente(int c, cliente cl[]);
+cliente consultarCliente(char nomeCl[], cliente cl[]);
+cliente consultarClienteId(int id, cliente cl[]);
 
 // Função principal
 
@@ -43,8 +47,8 @@ int main() {
     produto vetProd[50];
     cliente cl[20];
     nota nf;
-    int op = 0, x = 1, i = 0, consProd = 0, p = 0;
-    char opProd, nomeProd[NOME], cpf[12];
+    int op = 0, x = 1, i = 0, consProd = 0, consCl = 0, p = 0, id = 0, c = 0;
+    char opProd, opCl, nomeProd[NOME], nomeCl[NOME], cpf[12];
 
     // Menu de opções principal
     while (op != 8){
@@ -74,7 +78,7 @@ int main() {
                         fflush(stdin);
                         printf("\nDeseja cadastrar outro produto? S/N\n");
                         opProd = getche();
-
+                        system("cls");
                         if (opProd == 'S' || opProd == 's'){
 
                         } else
@@ -84,7 +88,8 @@ int main() {
                             } else {
                                 system("cls");
                                 printf("Opcao invalida!\n\n");
-                                system("pause");
+                                printf("\nPressione ENTER para voltar.");
+                                getchar();
                             }
                     } else {
                         printf("Atingido a quantidade maxima de cadastro.\nFavor volte e exclua algum produto pelo menu:\n3 - Listar todos os produtos\n");
@@ -106,17 +111,28 @@ int main() {
                     if (consProd == 1) {
                         printf("Digite o nome: ");
                         gets(nomeProd);
-                        consultarProduto(p,nomeProd);
+                        system("cls");
+                        consultarProduto(nomeProd, vetProd);
+                        printf("\n\nDigite ENTER para voltar.");
+                        getchar();
+                        system("cls");
                     } else
                         if (consProd == 2) {
                             printf("Digite o ID: ");
-
+                            scanf("%d", &id);
+                            system("cls");
+                            consultarProdutoId(id, vetProd);
+                            fflush(stdin);
+                            printf("\n\nPressione ENTER para voltar.");
+                            getchar();
+                            system("cls");
                         } else
                             if (consProd == 3){
-
+                                break;
                             } else {
                                 printf("\nOpcao invalida!\n\n");
-                                system("pause");
+                                printf("\nPressione ENTER para voltar.");
+                                getchar();
                                 system("cls");
                             }
                 }
@@ -128,15 +144,81 @@ int main() {
 
             // Cadastrar cliente
             case 4 :
-                printf("Informe o CPF: ");
-                fgets(cpf,12,stdin);
-                validarCpf(cpf);
+                while (c < 20){
+                    if(c < 20){
+                        cadastrarCliente(c, cl);
+                        while(c > -1){
+                            printf("Informe o CPF: ");
+                            fgets(cl[c].cpf,12,stdin);
+                            validarCpf(c,cl);
+                            if(validarCpf(c,cl) != 1){
+                                printf("CPF invalido!\nDigite novamente\n\n");
+                            } else {
+                                printf("CPF valido!\n\n");
+                                break;
+                            }
+                        }
+                        c ++;
+                        fflush(stdin);
+                        printf("\nDeseja cadastrar outro cliente? S/N\n");
+                        opCl = getche();
+                        system("cls");
+                        if (opCl == 'S' || opCl == 's'){
 
-                system("pause");
+                        } else
+                            if (opCl == 'N' || opCl == 'n'){
+                                system("cls");
+                                break;
+                            } else {
+                                system("cls");
+                                printf("Opcao invalida!\n\n");
+                                printf("\nPressione ENTER para voltar.");
+                                getchar();
+                            }
+                    } else {
+                        printf("Atingido a quantidade maxima de cadastro.\nFavor volte e exclua algum cliente pelo menu:\n6 - Listar todos os clientes\n");
+                    }
+                }
                 break;
 
             case 5 :
+                while (consCl != 1 || consCl != 2 || consCl != 3){
+                    printf("1 - Busca por nome\n");
+                    printf("2 - Busca por ID\n");
+                    printf("3 - Voltar\n\n");
+                    printf("Digite a opcao desejada: ");
+                    scanf("%d", &consCl);
+                    system("cls");
+                    fflush(stdin);
 
+                    if (consCl == 1) {
+                        printf("Digite o nome: ");
+                        gets(nomeCl);
+                        system("cls");
+                        consultarCliente(nomeCl, cl);
+                        printf("\n\nDigite ENTER para voltar.");
+                        getchar();
+                        system("cls");
+                    } else
+                        if (consCl == 2) {
+                            printf("Digite o ID: ");
+                            scanf("%d", &id);
+                            system("cls");
+                            consultarClienteId(id, cl);
+                            fflush(stdin);
+                            printf("\n\nPressione ENTER para voltar.");
+                            getchar();
+                            system("cls");
+                        } else
+                            if (consCl == 3){
+                                break;
+                            } else {
+                                printf("\nOpcao invalida!\n\n");
+                                printf("\nPressione ENTER para voltar.");
+                                getchar();
+                                system("cls");
+                            }
+                }
                 break;
 
             case 6 :
@@ -158,7 +240,6 @@ int main() {
         }
     }
 
-
     return 0;
 }
 
@@ -168,8 +249,7 @@ produto cadastrarProduto(produto prod[], int p){
     int i = 0;
 
     for(i = p; i < 50; i++){
-        printf("Digite o ID: ");
-        scanf("%d", &prod[i].id);
+        prod[i].id = p + 1;
         fflush(stdin);
         printf("Digite o nome: ");
         gets(prod[i].nome);
@@ -179,20 +259,48 @@ produto cadastrarProduto(produto prod[], int p){
         scanf("%d", &prod[i].qtd);
         break;
     }
-
 }
 
-// Função para consultar produto
+// Função para consultar produto por nome
 
-produto consultarProduto(int p, char nome[]){
+produto consultarProduto(char nome[], produto prod[]){
+    int i = 0;
+    for(i = 0; i < 50; i++){
+        if(strcmp(nome,prod[i].nome) == 0){
+            printf("Id %10.d | Nome: %s | R$ %10.2f | %10.d uni\n", prod[i].id, prod[i].nome, prod[i].preco, prod[i].qtd);
+        }
+    }
+}
+
+// Função para consultar produto por ID
+
+produto consultarProdutoId(int id, produto prod[]){
+    int i = 0;
+    for(i = 0; i < 50; i++){
+        if(id == prod[i].id){
+            printf("Id %10.d | Nome: %s | R$ %10.2f | %10.d uni\n", prod[i].id, prod[i].nome, prod[i].preco, prod[i].qtd);
+        }
+    }
+}
+
+// Função para Cadastrar Cliente
+
+cliente cadastrarCliente(int c, cliente cl[]){
     int i = 0;
 
+    for(i = c; i < 50; i++){
+        cl[i].id = c + 1;
+        fflush(stdin);
+        printf("Digite o nome: ");
+        gets(cl[i].nome);
 
+        break;
+    }
 }
 
 // Função para validar CPF
 
-int validarCpf(char cpf[12]){
+int validarCpf(int c, cliente cl[]){
     int peso1[] = {10,9,8,7,6,5,4,3,2},
         peso2[] = {11,10,9,8,7,6,5,4,3,2},
         soma = 0,
@@ -202,7 +310,7 @@ int validarCpf(char cpf[12]){
         segDigito = 0;
 
     for (i = 0; i < 11; i++){
-        cpf2[i] = cpf[i] - 48;
+        cpf2[i] = cl[c].cpf[i] - 48;
     }
     for (i = 0; i < 9; i++){
         soma = soma + (cpf2[i] * peso1[i]);
@@ -230,8 +338,32 @@ int validarCpf(char cpf[12]){
     }
 
     if (primDigito == cpf2[9] && segDigito == cpf2[10]){
-        printf("CPF valido\n\n");
+        return 1;
     } else {
-        printf("CPF Invalido\n\n");
+        return 0;
+    }
+}
+
+// Função para consultar cliente por nome
+
+cliente consultarCliente(char nomeCl[], cliente cl[]){
+    int i = 0;
+
+    for(i = 0; i < 20; i++){
+        if(strcmp(nomeCl, cl[i].nome) == 0){
+            printf("Id %10.d | Nome: %s | CPF: %s \n", cl[i].id, cl[i].nome, cl[i].cpf);
+        }
+    }
+}
+
+// Função para consultar cliente por ID
+
+cliente consultarClienteId(int id, cliente cl[]){
+    int i = 0;
+
+    for(i = 0; i < 20; i++){
+        if(id == cl[i].id){
+            printf("Id %10.d | Nome: %s | CPF: %s \n", cl[i].id, cl[i].nome, cl[i].cpf);
+        }
     }
 }
