@@ -40,6 +40,8 @@ int validarCpf(int c, cliente cl[]);
 cliente cadastrarCliente(int c, cliente cl[]);
 cliente consultarCliente(char nomeCl[], cliente cl[]);
 cliente consultarClienteId(int id, cliente cl[]);
+produto ordenacaoProd(int p, produto prod[]);
+cliente ordenacaoCl(int c, cliente cl[]);
 
 // Função principal
 
@@ -139,7 +141,10 @@ int main() {
                 break;
 
             case 3 :
-
+                ordenacaoProd(p, vetProd);
+                printf("\nPressione ENTER para voltar.");
+                getchar();
+                system("cls");
                 break;
 
             // Cadastrar cliente
@@ -222,7 +227,10 @@ int main() {
                 break;
 
             case 6 :
-
+                ordenacaoCl(c, cl);
+                printf("\nPressione ENTER para voltar.");
+                getchar();
+                system("cls");
                 break;
 
             case 7 :
@@ -365,5 +373,64 @@ cliente consultarClienteId(int id, cliente cl[]){
         if(id == cl[i].id){
             printf("Id %10.d | Nome: %s | CPF: %s \n", cl[i].id, cl[i].nome, cl[i].cpf);
         }
+    }
+}
+
+// Função para ordenar produtos em ordem alfabetica
+
+produto ordenacaoProd(int p, produto prod[]){
+    int i = 0, j = 0, auxQtd, auxId;
+    char aux[NOME];
+    float auxPreco;
+
+    for (i = 0; i < p; i++){
+        for(j = i + 1; j < p; j++){
+            if(strcmp(prod[i].nome,prod[j].nome) > 0){
+                strcpy(aux,prod[j].nome);
+                strcpy(prod[j].nome,prod[i].nome);
+                strcpy(prod[i].nome,aux);
+                auxId = prod[j].id;
+                prod[j].id = prod[i].id;
+                prod[i].id = auxId;
+                auxPreco = prod[j].preco;
+                prod[j].preco = prod[i].preco;
+                prod[i].preco = auxPreco;
+                auxQtd = prod[j].qtd;
+                prod[j].qtd = prod[i].qtd;
+                prod[i].qtd = auxQtd;
+            }
+        }
+    }
+
+    for (i = 0; i < p; i++){
+        printf("Id %10.d | Nome: %s | R$ %10.2f | %10.d uni\n", prod[i].id, prod[i].nome, prod[i].preco, prod[i].qtd);
+    }
+}
+
+// Função para ordenar clientes em ordem alfabetica
+
+cliente ordenacaoCl(int c, cliente cl[]){
+    int i = 0, j = 0, auxQtd, auxId;
+    char aux[NOME];
+    float auxPreco;
+
+    for (i = 0; i < c; i++){
+        for(j = i + 1; j < c; j++){
+            if(strcmp(cl[i].nome,cl[j].nome) > 0){
+                strcpy(aux,cl[j].nome);
+                strcpy(cl[j].nome,cl[i].nome);
+                strcpy(cl[i].nome,aux);
+                auxId = cl[j].id;
+                cl[j].id = cl[i].id;
+                cl[i].id = auxId;
+                strcpy(aux,cl[j].cpf);
+                strcpy(cl[j].cpf,cl[i].cpf);
+                strcpy(cl[i].cpf,aux);
+            }
+        }
+    }
+
+    for (i = 0; i < c; i++){
+        printf("Id %10.d | Nome: %s | CPF %s\n", cl[i].id, cl[i].nome, cl[i].cpf);
     }
 }
