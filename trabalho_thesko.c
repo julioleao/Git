@@ -34,18 +34,18 @@ typedef struct nota{
 // Deaclaração de funções
 
 produto cadastrarProduto(produto prod[], int p);
-produto consultarProduto(char nome[], produto prod[]);
-produto consultarProdutoId(int id, produto prod[]);
+produto consultarProduto(int p, char nome[], produto prod[]);
+produto consultarProdutoId(int p, int id, produto prod[]);
 int validarCpf(int c, cliente cl[]);
 cliente cadastrarCliente(int c, cliente cl[]);
-cliente consultarCliente(char nomeCl[], cliente cl[]);
-cliente consultarClienteId(int id, cliente cl[]);
+cliente consultarCliente(int c, char nomeCl[], cliente cl[]);
+cliente consultarClienteId(int c, int id, cliente cl[]);
 produto ordenacaoProd(int p, produto prod[]);
 cliente ordenacaoCl(int c, cliente cl[]);
 nota notaFiscal(int p, int n, int id, int idPrd, int qtd, produto prod[], nota nf[]);
 nota consultarNf(nota nf[], int n);
 produto ordenacaoProdId(int p, produto prod[]);
-void venda(int n, nota nf[], int c, int p, produto vetProd[], int id, int idPrd, int qtd);
+void venda(int n, nota nf[], int c, int p, produto vetProd[], int id, int idPrd, int qtd, cliente cl[]);
 
 // Função principal
 
@@ -132,7 +132,7 @@ int main() {
                         printf("Digite o nome: ");
                         gets(nomeProd);
                         system("cls");
-                        consultarProduto(nomeProd, vetProd);
+                        consultarProduto(c, nomeProd, vetProd);
                         printf("\n\nDigite ENTER para voltar.");
                         getchar();
                         system("cls");
@@ -141,7 +141,7 @@ int main() {
                             printf("Digite o ID: ");
                             scanf("%d", &id);
                             system("cls");
-                            consultarProdutoId(id, vetProd);
+                            consultarProdutoId(p, id, vetProd);
                             fflush(stdin);
                             printf("\n\nPressione ENTER para voltar.");
                             getchar();
@@ -184,9 +184,12 @@ int main() {
                         }
                         c ++;
                         fflush(stdin);
-                        printf("\nDeseja cadastrar outro cliente? S/N\n");
-                        opCl = getche();
-                        system("cls");
+
+                            printf("\nDeseja cadastrar outro cliente? S/N\n");
+                        do{
+                            opCl = getche();
+                        }while(opCl != 'S' || opCl != 'N');
+
                         if (opCl == 'S' || opCl == 's'){
 
                         } else
@@ -198,9 +201,10 @@ int main() {
                                 printf("Opcao invalida!\n\n");
                                 printf("\nPressione ENTER para voltar.");
                                 getchar();
+                                system("cls");
                             }
                     } else {
-                        printf("Atingido a quantidade maxima de cadastro.\nFavor volte e exclua algum cliente pelo menu:\n6 - Listar todos os clientes\n");
+                        printf("Atingido a quantidade maxima de cadastro.\nFavor volte e exclua algum cliente\n");
                     }
                 }
                 break;
@@ -220,7 +224,7 @@ int main() {
                         printf("Digite o nome: ");
                         gets(nomeCl);
                         system("cls");
-                        consultarCliente(nomeCl, cl);
+                        consultarCliente(c, nomeCl, cl);
                         printf("\n\nDigite ENTER para voltar.");
                         getchar();
                         system("cls");
@@ -229,7 +233,7 @@ int main() {
                             printf("Digite o ID: ");
                             scanf("%d", &id);
                             system("cls");
-                            consultarClienteId(id, cl);
+                            consultarClienteId(c, id, cl);
                             fflush(stdin);
                             printf("\n\nPressione ENTER para voltar.");
                             getchar();
@@ -269,9 +273,7 @@ int main() {
                     system("cls");
 
                     if(opVenda == 1){
-                        ordenacaoCl(c, cl);
-                        ordenacaoProdId(p, vetProd);
-                        venda(n, nf, c, p, vetProd, id, idPrd, qtd);
+                        venda(n, nf, c, p, vetProd, id, idPrd, qtd, cl);
 
                         n++;
                         opVenda = -1;
@@ -348,9 +350,9 @@ produto cadastrarProduto(produto prod[], int p){
 
 // Função para consultar produto por nome
 
-produto consultarProduto(char nome[], produto prod[]){
+produto consultarProduto(int p, char nome[], produto prod[]){
     int i = 0;
-    for(i = 0; i < 50; i++){
+    for(i = 0; i < p; i++){
         if(strcmp(nome,prod[i].nome) == 0){
             printf("Id %10.d | Nome: %s | R$ %10.2f | %10.d uni\n", prod[i].id, prod[i].nome, prod[i].preco, prod[i].qtd);
         }
@@ -359,9 +361,9 @@ produto consultarProduto(char nome[], produto prod[]){
 
 // Função para consultar produto por ID
 
-produto consultarProdutoId(int id, produto prod[]){
+produto consultarProdutoId(int p, int id, produto prod[]){
     int i = 0;
-    for(i = 0; i < 50; i++){
+    for(i = 0; i < p; i++){
         if(id == prod[i].id){
             printf("Id %10.d | Nome: %s | R$ %10.2f | %10.d uni\n", prod[i].id, prod[i].nome, prod[i].preco, prod[i].qtd);
         }
@@ -431,10 +433,10 @@ int validarCpf(int c, cliente cl[]){
 
 // Função para consultar cliente por nome
 
-cliente consultarCliente(char nomeCl[], cliente cl[]){
+cliente consultarCliente(int c, char nomeCl[], cliente cl[]){
     int i = 0;
 
-    for(i = 0; i < 20; i++){
+    for(i = 0; i < c; i++){
         if(strcmp(nomeCl, cl[i].nome) == 0){
             printf("Id %10.d | Nome: %s | CPF: %s \n", cl[i].id, cl[i].nome, cl[i].cpf);
         }
@@ -443,10 +445,10 @@ cliente consultarCliente(char nomeCl[], cliente cl[]){
 
 // Função para consultar cliente por ID
 
-cliente consultarClienteId(int id, cliente cl[]){
+cliente consultarClienteId(int c, int id, cliente cl[]){
     int i = 0;
 
-    for(i = 0; i < 20; i++){
+    for(i = 0; i < c; i++){
         if(id == cl[i].id){
             printf("Id %10.d | Nome: %s | CPF: %s \n", cl[i].id, cl[i].nome, cl[i].cpf);
         }
@@ -514,25 +516,26 @@ cliente ordenacaoCl(int c, cliente cl[]){
 
 // Função para vendas
 
-void venda(int n, nota nf[], int c, int p, produto vetProd[], int id, int idPrd, int qtd){
-
+void venda(int n, nota nf[], int c, int p, produto vetProd[], int id, int idPrd, int qtd, cliente cl[]){
+    system("cls");
+    ordenacaoCl(c, cl);
     do{
-        printf("\n\nInforme o id do cliente: ");
+        printf("\nInforme o id do cliente: ");
         scanf("%d", &id);
-    }while(id < 1 && id >= c);
+    }while(id < 1 || id > c);
 
     system("cls");
-
+    ordenacaoProdId(p, vetProd);
     do{
-        printf("\n\nInforme o id do produto: ");
+        printf("\nInforme o id do produto: ");
         scanf("%d", &idPrd);
-    }while (idPrd < 1 && idPrd >= p);
+    }while (idPrd < 1 || idPrd > p);
 
     do{
         printf("Informe a quantidade desejada: ");
         scanf("%d", &qtd);
     } while (qtd > vetProd[idPrd - 1].qtd);
-
+    vetProd[idPrd - 1].qtd = vetProd[idPrd - 1].qtd - qtd;
     notaFiscal(p, n, id, idPrd, qtd, vetProd, nf);
 }
 
