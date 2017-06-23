@@ -40,8 +40,9 @@ produto consultarProdutoId(int p, int id, produto prod[], int *pp);
 produto excluirProduto(int i, produto prod[], int **ppp);
 int validarCpf(int c, cliente cl[]);
 cliente cadastrarCliente(int c, cliente cl[]);
-cliente consultarCliente(int c, char nomeCl[], cliente cl[]);
-cliente consultarClienteId(int c, int id, cliente cl[]);
+cliente consultarCliente(int c, char nomeCl[], cliente cl[], int *cc);
+cliente consultarClienteId(int c, int id, cliente cl[], int *cc);
+cliente excluirCliente(int i, cliente cl[], int **ccc);
 produto ordenacaoProd(int p, produto prod[]);
 cliente ordenacaoCl(int c, cliente cl[]);
 nota notaFiscal(int p, int n, int id, int idPrd, int qtd, produto prod[], nota nf[]);
@@ -69,7 +70,7 @@ int main() {
     id: Consulta por ID
     idPrd: Consultar ID de produto  */
 
-    int op = 0, id = 0, idPrd = 0, consProd = 0, consCl = 0, p = 0, c = 0, n = 0, opVenda = -1, qtd = 0, *pp = &p;
+    int op = 0, id = 0, idPrd = 0, consProd = 0, consCl = 0, p = 0, *pp = &p, c = 0, *cc = &c, n = 0, opVenda = -1, qtd = 0;
     char opProd, opCl, nomeProd[NOME], nomeCl[NOME], cpf[12];
 
     // Menu de opções principal
@@ -188,10 +189,7 @@ int main() {
                         fflush(stdin);
 
                             printf("\nDeseja cadastrar outro cliente? S/N\n");
-                        do{
                             opCl = getche();
-                        }while(opCl != 'S' || opCl != 'N');
-
                         if (opCl == 'S' || opCl == 's'){
 
                         } else
@@ -226,7 +224,7 @@ int main() {
                         printf("Digite o nome: ");
                         gets(nomeCl);
                         system("cls");
-                        consultarCliente(c, nomeCl, cl);
+                        consultarCliente(c, nomeCl, cl, &c);
                         printf("\n\nDigite ENTER para voltar.");
                         getchar();
                         system("cls");
@@ -235,7 +233,7 @@ int main() {
                             printf("Digite o ID: ");
                             scanf("%d", &id);
                             system("cls");
-                            consultarClienteId(c, id, cl);
+                            consultarClienteId(c, id, cl, &c);
                             fflush(stdin);
                             printf("\n\nPressione ENTER para voltar.");
                             getchar();
@@ -499,26 +497,87 @@ int validarCpf(int c, cliente cl[]){
 
 // Função para consultar cliente por nome
 
-cliente consultarCliente(int c, char nomeCl[], cliente cl[]){
-    int i = 0;
-
+cliente consultarCliente(int c, char nomeCl[], cliente cl[], int *cc){
+    int i, cont = 0, **ccc = &cc;
+    char resp = 0;
     for(i = 0; i < c; i++){
-        if(strcmp(nomeCl, cl[i].nome) == 0){
-            printf("Id %10.d | Nome: %s | CPF: %s \n", cl[i].id, cl[i].nome, cl[i].cpf);
+        if(strcmp(nomeCl,cl[i].nome) == 0){
+            cont += 1;
+            excluirCliente(i, cl, &cc);
         }
+    }
+    if (cont < 1){
+        do{
+            printf("Cliente não encontrado!\n");
+            printf("1 - Voltar.");
+            resp = getch();
+        }while(resp != '1');
     }
 }
 
 // Função para consultar cliente por ID
 
-cliente consultarClienteId(int c, int id, cliente cl[]){
-    int i = 0;
-
+cliente consultarClienteId(int c, int id, cliente cl[], int *cc){
+    int i, cont = 0, **ccc = &cc;
+    char resp;
     for(i = 0; i < c; i++){
         if(id == cl[i].id){
-            printf("Id %10.d | Nome: %s | CPF: %s \n", cl[i].id, cl[i].nome, cl[i].cpf);
+        cont += 1;
+            excluirCliente(i, cl, &cc);
         }
     }
+    if (cont < 1){
+        do{
+            printf("Cliente não encontrado!\n");
+            printf("1 - Voltar.");
+            resp = getch();
+        }while(resp != '1');
+    }
+}
+
+
+// Função para excluir  clientes
+
+cliente excluirCliente(int i, cliente cl[], int **ccc){
+char resp = 0;
+    do{
+        system("cls");
+        printf("Id %10.d | Nome: %s | CPF: %s \n", cl[i].id, cl[i].nome, cl[i].cpf);
+        printf("\n1 - Excluir Cliente.");
+        printf("\n2 - Voltar.");
+        resp = getch();
+        if (resp == '1'){
+            do{
+                system("cls");
+                printf("Após excluir o cliente você não poderá recupera-lo, deseja continuar?\n1 - Sim.\n2 - Não.");
+                resp = 0;
+                resp = getch();
+                }while(resp != '1' && resp != '2');
+                    if (resp == '1'){
+                        if (**ccc > 1){
+                        cl[i].id = cl[**ccc-1].id;
+                        strcpy(cl[i].nome, cl[**ccc-1].nome);
+                        strcpy(cl[i].cpf, cl[**ccc-1].cpf);
+                        **ccc -= 1;
+                        }else{
+                        cl[i].id = cl[**ccc].id;
+                        strcpy(cl[i].nome, cl[**ccc].nome);
+                        strcpy(cl[i].cpf, cl[**ccc].cpf);
+                        **ccc -= 1;
+                        }
+                        do{
+                            system("cls");
+                            printf("\nCliente excluído com sucesso!");
+                            printf("\n1 - voltar.");
+                            resp = 0;
+                            resp = getch();
+                        }while(resp != '1');
+                    }
+                }else
+                if (resp == '2'){
+                    break;
+                }
+    }while(resp != '1');
 }
 
 // Função para ordenar produtos em ordem alfabetica
