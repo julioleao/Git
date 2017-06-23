@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <locale.h>
 #include <string.h>
 
 #define ID 10
@@ -25,30 +26,60 @@ typedef struct cliente{
 // Registro para Nota Fiscal
 
 typedef struct nota{
-    int num[ID];
-    int idCliente[ID];
+    int num;
+    int idCliente;
     char produto[NOME];
     int qtd;
 }nota;
 
-// Deaclaração de funções
-
+// Deaclaração de funçõe
 produto cadastrarProduto(produto prod[], int p);
-produto consultarProduto(char nome[], produto prod[]);
-produto consultarProdutoId(int id, produto prod[]);
+produto consultarProduto(char nome[], produto prod[], int *pp);
+produto consultarProdutoId(int id, produto prod[], int *pp);
+produto excluirProduto(int i, produto prod[], int **ppp);
 int validarCpf(int c, cliente cl[]);
 cliente cadastrarCliente(int c, cliente cl[]);
 cliente consultarCliente(char nomeCl[], cliente cl[]);
 cliente consultarClienteId(int id, cliente cl[]);
+produto ordenacaoProd(int p, produto prod[]);
+cliente ordenacaoCl(int c, cliente cl[]);
+<<<<<<< HEAD
+=======
+nota notaFiscal(int p, int n, int id, int idPrd, int qtd, produto prod[], nota nf[]);
+nota consultarNf(nota nf[], int n);
+produto ordenacaoProdId(int p, produto prod[]);
+void venda(int n, nota nf[], int c, int p, produto vetProd[], int id, int idPrd, int qtd);
+>>>>>>> fabdd12746184fe7bf0ba33ecb3d58c8ef6360a1
 
 // Função principal
 
 int main() {
     produto vetProd[50];
+    setlocale(LC_ALL,"portuguese");
     cliente cl[20];
+<<<<<<< HEAD
     nota nf;
-    int op = 0, x = 1, i = 0, consProd = 0, consCl = 0, p = 0, id = 0, c = 0;
+    int op = 0, x = 1, i = 0, consProd = 0, consCl = 0, p = 0, *pp = &p,id = 0, c = 0, opVenda = 0;
+    char opProd, opCl, nomeProd[NOME], nomeCl[NOME], cpf[12];setlocale(LC_ALL,"portuguese");
+=======
+    nota nf[100];
+
+    /*  Variaveis
+    op: Menu principal,
+    consProd: Consultar Produto
+    consCl: Consultar Cliente
+    p: Controla quantidade de produtos cadastrados
+    c: Controla quantidade de clientes cadastrados
+    n: Controla o numero da NF
+    opVenda: Opções para o menu Vendas
+    opProd: Opções para o menu cadastrar produto
+    opCl: Opções para o menu cadastrar cliente
+    id: Consulta por ID
+    idPrd: Consultar ID de produto  */
+
+    int op = 0, id = 0, idPrd = 0, consProd = 0, consCl = 0, p = 0, c = 0, n = 0, opVenda = -1, qtd = 0;
     char opProd, opCl, nomeProd[NOME], nomeCl[NOME], cpf[12];
+>>>>>>> fabdd12746184fe7bf0ba33ecb3d58c8ef6360a1
 
     // Menu de opções principal
     while (op != 8){
@@ -59,7 +90,7 @@ int main() {
         printf("4 - Cadastrar cliente\n");
         printf("5 - Consultar cliente\n");
         printf("6 - Listar todos os clientes\n");
-        printf("7 - Realizar venda\n");
+        printf("7 - Vendas\n");
         printf("8 - Sair\n");
         printf("\nDigite a opcao desejada: ");
         scanf("%d", &op);
@@ -90,6 +121,7 @@ int main() {
                                 printf("Opcao invalida!\n\n");
                                 printf("\nPressione ENTER para voltar.");
                                 getchar();
+                                system("cls");
                             }
                     } else {
                         printf("Atingido a quantidade maxima de cadastro.\nFavor volte e exclua algum produto pelo menu:\n3 - Listar todos os produtos\n");
@@ -112,19 +144,15 @@ int main() {
                         printf("Digite o nome: ");
                         gets(nomeProd);
                         system("cls");
-                        consultarProduto(nomeProd, vetProd);
-                        printf("\n\nDigite ENTER para voltar.");
-                        getchar();
+                        consultarProduto(nomeProd, vetProd, &p);
                         system("cls");
                     } else
                         if (consProd == 2) {
                             printf("Digite o ID: ");
                             scanf("%d", &id);
                             system("cls");
-                            consultarProdutoId(id, vetProd);
+                            consultarProdutoId(id, vetProd, &p);
                             fflush(stdin);
-                            printf("\n\nPressione ENTER para voltar.");
-                            getchar();
                             system("cls");
                         } else
                             if (consProd == 3){
@@ -138,8 +166,12 @@ int main() {
                 }
                 break;
 
+            // Lista de produto em ordem alfabética
             case 3 :
-
+                ordenacaoProd(p, vetProd);
+                printf("\nPressione ENTER para voltar.");
+                getchar();
+                system("cls");
                 break;
 
             // Cadastrar cliente
@@ -181,6 +213,7 @@ int main() {
                 }
                 break;
 
+            // Consultar cliente
             case 5 :
                 while (consCl != 1 || consCl != 2 || consCl != 3){
                     printf("1 - Busca por nome\n");
@@ -221,14 +254,112 @@ int main() {
                 }
                 break;
 
+            // Lista de clientes em ordem alfabética
             case 6 :
-
+                ordenacaoCl(c, cl);
+                printf("\nPressione ENTER para voltar.");
+                getchar();
+                system("cls");
                 break;
 
+            // Realizar venda
             case 7 :
+<<<<<<< HEAD
+=======
+                opVenda = -1;
+>>>>>>> fabdd12746184fe7bf0ba33ecb3d58c8ef6360a1
+                while(opVenda < 0){
+                    printf("1 - Realizar vendas\n");
+                    printf("2 - Consultar NFs\n");
+                    printf("3 - Consultar estoque\n");
+                    printf("4 - Consultar cliente\n");
+                    printf("5 - Voltar\n");
+<<<<<<< HEAD
+                    printf("Informe a opaco desejada: ");
+                    scanf("%d", &opVenda);
 
+                    if(opVenda == 1){
+
+                    } else
+                        if(opVenda == 2){
+
+                        } else
+                            if(opVenda == 3){
+                                ordenacaoProd(p, vetProd);
+                                printf("\nPressione ENTER para voltar.");
+                                getchar();
+                                system("cls");
+                            } else
+                                if (opVenda == 4){
+                                    ordenacaoCl(c, cl);
+                                    printf("\nPressione ENTER para voltar.");
+                                    getchar();
+                                    system("cls");
+                                    break;
+                                } else
+                                    if (opVenda == 5){
+                                        break;
+                                    } else {
+                                        printf("\nOpcao invalida!\n\n");
+                                        printf("\nPressione ENTER para voltar.");
+                                        getchar();
+                                        system("cls");
+                                    }
+
+
+=======
+                    printf("\nInforme a opcao desejada: ");
+                    scanf("%d", &opVenda);
+                    fflush(stdin);
+                    system("cls");
+
+                    if(opVenda == 1){
+                        ordenacaoCl(c, cl);
+                        ordenacaoProdId(p, vetProd);
+                        venda(n, nf, c, p, vetProd, id, idPrd, qtd);
+
+                        n++;
+                        opVenda = -1;
+                    } else
+                        if(opVenda == 2){
+
+                        consultarNf(nf, n);
+
+                        printf("\nPressione ENTER para voltar.");
+                        getchar();
+                        system("cls");
+                        opVenda = -1;
+                        } else
+                            if(opVenda == 3){
+                                ordenacaoProd(p, vetProd);
+                                printf("\nPressione ENTER para voltar.");
+                                getchar();
+                                system("cls");
+                                opVenda = -1;
+                            } else
+                                if (opVenda == 4){
+                                    ordenacaoCl(c, cl);
+                                    printf("\nPressione ENTER para voltar.");
+                                    getchar();
+                                    system("cls");
+                                    opVenda = -1;
+                                } else
+                                    if (opVenda == 5){
+                                        break;
+                                    } else {
+                                        printf("\nOpcao invalida!\n\n");
+                                        printf("\nPressione ENTER para voltar.");
+                                        getchar();
+                                        opVenda = -1;
+                                        system("cls");
+                                    }
+
+
+>>>>>>> fabdd12746184fe7bf0ba33ecb3d58c8ef6360a1
+                }
                 break;
 
+            // Sair do sistema
             case 8 :
                 printf("Logout realizado com sucesso.\n");
                 break;
@@ -263,24 +394,79 @@ produto cadastrarProduto(produto prod[], int p){
 
 // Função para consultar produto por nome
 
-produto consultarProduto(char nome[], produto prod[]){
-    int i = 0;
+produto consultarProduto(char nome[], produto prod[], int *pp){
+    int i, cont = 0, **ppp = &pp;
+    char resp;
     for(i = 0; i < 50; i++){
         if(strcmp(nome,prod[i].nome) == 0){
-            printf("Id %10.d | Nome: %s | R$ %10.2f | %10.d uni\n", prod[i].id, prod[i].nome, prod[i].preco, prod[i].qtd);
+            cont += 1;
+            excluirProduto(i, prod, &pp);
         }
+    }
+    if (cont < 1){
+        do{
+            printf("Produto não encontrado!\n");
+            printf("1 - Voltar.");
+            resp = getch();
+        }while(resp != '1');
     }
 }
 
+
 // Função para consultar produto por ID
 
-produto consultarProdutoId(int id, produto prod[]){
-    int i = 0;
+produto consultarProdutoId(int id, produto prod[], int *pp){
+    int i = 0, cont = 0, **ppp = &pp;
+    char resp;
     for(i = 0; i < 50; i++){
-        if(id == prod[i].id){
-            printf("Id %10.d | Nome: %s | R$ %10.2f | %10.d uni\n", prod[i].id, prod[i].nome, prod[i].preco, prod[i].qtd);
+            if(id == prod[i].id){
+                cont += 1;
+                excluirProduto(i,prod,&pp);
         }
     }
+    if (cont < 1){
+        do{
+            printf("Produto não encontrado!\n");
+            printf("1 - Voltar.");
+            resp = getch();
+        }while(resp != '1');
+    }
+}
+
+//Função para excluir Produtos
+
+produto excluirProduto(int i, produto prod[], int **ppp){
+    char resp;
+    do{
+        system("cls");
+        printf("Id %10.d | Nome: %s | R$ %10.2f | %10.d uni\n", prod[i].id, prod[i].nome, prod[i].preco, prod[i].qtd);
+        printf("\n1 - Excluir Produto.");
+        printf("\n2 - Voltar.");
+        resp = getch();
+        if (resp == '1'){
+            do{
+                system("cls");
+                printf("Após excluir o produto você não poderá recupera-lo, deseja continuar?\n1 - Sim.\n2 - Não.");
+                resp = getch();
+                }while(resp != '1' && resp != '2');
+                    if (resp == '1'){
+                        prod[i].id = prod[**ppp - 1].id;
+                        strcpy(prod[i].nome, prod[**ppp - 1].nome);
+                        prod[i].preco = prod[**ppp - 1].preco;
+                        prod[i].qtd = prod[**ppp - 1].qtd;
+                        **ppp -= 1;
+                        do{
+                            system("cls");
+                            printf("\nProduto excluído com sucesso!");
+                            printf("\n1 - voltar.");
+                            resp = getch();
+                        }while(resp != '1');
+                    }
+                }else
+                if (resp == '2'){
+                    break;
+                }
+    }while(resp != '1');
 }
 
 // Função para Cadastrar Cliente
@@ -367,3 +553,148 @@ cliente consultarClienteId(int id, cliente cl[]){
         }
     }
 }
+
+// Função para ordenar produtos em ordem alfabetica
+
+produto ordenacaoProd(int p, produto prod[]){
+    int i = 0, j = 0, auxQtd, auxId;
+    char aux[NOME];
+    float auxPreco;
+
+    for (i = 0; i < p; i++){
+        for(j = i + 1; j < p; j++){
+            if(strcmp(prod[i].nome,prod[j].nome) > 0){
+                strcpy(aux,prod[j].nome);
+                strcpy(prod[j].nome,prod[i].nome);
+                strcpy(prod[i].nome,aux);
+                auxId = prod[j].id;
+                prod[j].id = prod[i].id;
+                prod[i].id = auxId;
+                auxPreco = prod[j].preco;
+                prod[j].preco = prod[i].preco;
+                prod[i].preco = auxPreco;
+                auxQtd = prod[j].qtd;
+                prod[j].qtd = prod[i].qtd;
+                prod[i].qtd = auxQtd;
+            }
+        }
+    }
+
+    for (i = 0; i < p; i++){
+        printf("Id %10.d | Nome: %s | R$ %10.2f | %10.d uni\n", prod[i].id, prod[i].nome, prod[i].preco, prod[i].qtd);
+    }
+}
+
+// Função para ordenar clientes em ordem alfabetica
+
+cliente ordenacaoCl(int c, cliente cl[]){
+    int i = 0, j = 0, auxQtd, auxId;
+    char aux[NOME];
+    float auxPreco;
+
+    for (i = 0; i < c; i++){
+        for(j = i + 1; j < c; j++){
+            if(strcmp(cl[i].nome,cl[j].nome) > 0){
+                strcpy(aux,cl[j].nome);
+                strcpy(cl[j].nome,cl[i].nome);
+                strcpy(cl[i].nome,aux);
+                auxId = cl[j].id;
+                cl[j].id = cl[i].id;
+                cl[i].id = auxId;
+                strcpy(aux,cl[j].cpf);
+                strcpy(cl[j].cpf,cl[i].cpf);
+                strcpy(cl[i].cpf,aux);
+            }
+        }
+    }
+
+    for (i = 0; i < c; i++){
+        printf("Id %10.d | Nome: %s | CPF %s\n", cl[i].id, cl[i].nome, cl[i].cpf);
+    }
+}
+<<<<<<< HEAD
+=======
+
+// Função para vendas
+
+void venda(int n, nota nf[], int c, int p, produto vetProd[], int id, int idPrd, int qtd){
+
+    do{
+        printf("\n\nInforme o id do cliente: ");
+        scanf("%d", &id);
+    }while(id < 1 && id >= c);
+
+    system("cls");
+
+    do{
+        printf("\n\nInforme o id do produto: ");
+        scanf("%d", &idPrd);
+    }while (idPrd < 1 && idPrd >= p);
+
+    do{
+        printf("Informe a quantidade desejada: ");
+        scanf("%d", &qtd);
+    } while (qtd > vetProd[idPrd - 1].qtd);
+
+    notaFiscal(p, n, id, idPrd, qtd, vetProd, nf);
+}
+
+// Função para gerar NF
+
+nota notaFiscal(int p, int n, int id, int idPrd, int qtd, produto prod[], nota nf[]){
+    int i = 0, j = 0;
+
+    for(i = n; i < 100; i++){
+        nf[i].num = n + 1;
+        nf[i].idCliente = id;
+        for(j = 0; j < p; j++){
+            if (prod[j].id == idPrd){
+                strcpy(nf[i].produto, prod[j].nome);
+            }
+        }
+        nf[i].qtd = qtd;
+        break;
+    }
+}
+
+// Função para consultar NF
+
+nota consultarNf(nota nf[], int n){
+    int i = 0;
+
+    for (i = 0; i < n; i++){
+        printf("\t Numero da Nota: %d \n\nID do Cliente: %d \nNome do produto: %s \nQuantidade: %d \n",nf[i].num, nf[i].idCliente, nf[i].produto, nf[i].qtd);
+    }
+}
+
+// Função para ordenar por ID
+
+produto ordenacaoProdId(int p, produto prod[]){
+    int i = 0, j = 0, auxQtd, auxId;
+    char aux[NOME];
+    float auxPreco;
+
+    for (i = 0; i < p; i++){
+        for(j = i + 1; j < p; j++){
+            if(prod[i].id > prod[j].id){
+                strcpy(aux,prod[j].nome);
+                strcpy(prod[j].nome,prod[i].nome);
+                strcpy(prod[i].nome,aux);
+                auxId = prod[j].id;
+                prod[j].id = prod[i].id;
+                prod[i].id = auxId;
+                auxPreco = prod[j].preco;
+                prod[j].preco = prod[i].preco;
+                prod[i].preco = auxPreco;
+                auxQtd = prod[j].qtd;
+                prod[j].qtd = prod[i].qtd;
+                prod[i].qtd = auxQtd;
+            }
+        }
+    }
+     for (i = 0; i < p; i++){
+        printf("Id %10.d | Nome: %s | R$ %10.2f | %10.d uni\n", prod[i].id, prod[i].nome, prod[i].preco, prod[i].qtd);
+    }
+}
+
+>>>>>>> fabdd12746184fe7bf0ba33ecb3d58c8ef6360a1
