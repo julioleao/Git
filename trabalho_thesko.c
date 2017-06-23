@@ -25,8 +25,8 @@ typedef struct cliente{
 // Registro para Nota Fiscal
 
 typedef struct nota{
-    int num[ID];
-    int idCliente[ID];
+    int num;
+    int idCliente;
     char produto[NOME];
     int qtd;
 }nota;
@@ -42,14 +42,32 @@ cliente consultarCliente(char nomeCl[], cliente cl[]);
 cliente consultarClienteId(int id, cliente cl[]);
 produto ordenacaoProd(int p, produto prod[]);
 cliente ordenacaoCl(int c, cliente cl[]);
+nota notaFiscal(int p, int n, int id, int idPrd, int qtd, produto prod[], nota nf[]);
+nota consultarNf(nota nf[], int n);
+produto ordenacaoProdId(int p, produto prod[]);
+void venda(int n, nota nf[], int c, int p, produto vetProd[], int id, int idPrd, int qtd);
 
 // Função principal
 
 int main() {
     produto vetProd[50];
     cliente cl[20];
-    nota nf;
-    int op = 0, x = 1, i = 0, consProd = 0, consCl = 0, p = 0, id = 0, c = 0, opVenda = 0;
+    nota nf[100];
+
+    /*  Variaveis
+    op: Menu principal,
+    consProd: Consultar Produto
+    consCl: Consultar Cliente
+    p: Controla quantidade de produtos cadastrados
+    c: Controla quantidade de clientes cadastrados
+    n: Controla o numero da NF
+    opVenda: Opções para o menu Vendas
+    opProd: Opções para o menu cadastrar produto
+    opCl: Opções para o menu cadastrar cliente
+    id: Consulta por ID
+    idPrd: Consultar ID de produto  */
+
+    int op = 0, id = 0, idPrd = 0, consProd = 0, consCl = 0, p = 0, c = 0, n = 0, opVenda = -1, qtd = 0;
     char opProd, opCl, nomeProd[NOME], nomeCl[NOME], cpf[12];
 
     // Menu de opções principal
@@ -238,33 +256,48 @@ int main() {
 
             // Realizar venda
             case 7 :
+                opVenda = -1;
                 while(opVenda < 0){
                     printf("1 - Realizar vendas\n");
                     printf("2 - Consultar NFs\n");
                     printf("3 - Consultar estoque\n");
                     printf("4 - Consultar cliente\n");
                     printf("5 - Voltar\n");
-                    printf("Informe a opaco desejada: ");
+                    printf("\nInforme a opcao desejada: ");
                     scanf("%d", &opVenda);
+                    fflush(stdin);
+                    system("cls");
 
                     if(opVenda == 1){
+                        ordenacaoCl(c, cl);
+                        ordenacaoProdId(p, vetProd);
+                        venda(n, nf, c, p, vetProd, id, idPrd, qtd);
 
+                        n++;
+                        opVenda = -1;
                     } else
                         if(opVenda == 2){
 
+                        consultarNf(nf, n);
+
+                        printf("\nPressione ENTER para voltar.");
+                        getchar();
+                        system("cls");
+                        opVenda = -1;
                         } else
                             if(opVenda == 3){
                                 ordenacaoProd(p, vetProd);
                                 printf("\nPressione ENTER para voltar.");
                                 getchar();
                                 system("cls");
+                                opVenda = -1;
                             } else
                                 if (opVenda == 4){
                                     ordenacaoCl(c, cl);
                                     printf("\nPressione ENTER para voltar.");
                                     getchar();
                                     system("cls");
-                                    break;
+                                    opVenda = -1;
                                 } else
                                     if (opVenda == 5){
                                         break;
@@ -272,6 +305,7 @@ int main() {
                                         printf("\nOpcao invalida!\n\n");
                                         printf("\nPressione ENTER para voltar.");
                                         getchar();
+                                        opVenda = -1;
                                         system("cls");
                                     }
 
@@ -477,3 +511,86 @@ cliente ordenacaoCl(int c, cliente cl[]){
         printf("Id %10.d | Nome: %s | CPF %s\n", cl[i].id, cl[i].nome, cl[i].cpf);
     }
 }
+
+// Função para vendas
+
+void venda(int n, nota nf[], int c, int p, produto vetProd[], int id, int idPrd, int qtd){
+
+    do{
+        printf("\n\nInforme o id do cliente: ");
+        scanf("%d", &id);
+    }while(id < 1 && id >= c);
+
+    system("cls");
+
+    do{
+        printf("\n\nInforme o id do produto: ");
+        scanf("%d", &idPrd);
+    }while (idPrd < 1 && idPrd >= p);
+
+    do{
+        printf("Informe a quantidade desejada: ");
+        scanf("%d", &qtd);
+    } while (qtd > vetProd[idPrd - 1].qtd);
+
+    notaFiscal(p, n, id, idPrd, qtd, vetProd, nf);
+}
+
+// Função para gerar NF
+
+nota notaFiscal(int p, int n, int id, int idPrd, int qtd, produto prod[], nota nf[]){
+    int i = 0, j = 0;
+
+    for(i = n; i < 100; i++){
+        nf[i].num = n + 1;
+        nf[i].idCliente = id;
+        for(j = 0; j < p; j++){
+            if (prod[j].id == idPrd){
+                strcpy(nf[i].produto, prod[j].nome);
+            }
+        }
+        nf[i].qtd = qtd;
+        break;
+    }
+}
+
+// Função para consultar NF
+
+nota consultarNf(nota nf[], int n){
+    int i = 0;
+
+    for (i = 0; i < n; i++){
+        printf("\t Numero da Nota: %d \n\nID do Cliente: %d \nNome do produto: %s \nQuantidade: %d \n",nf[i].num, nf[i].idCliente, nf[i].produto, nf[i].qtd);
+    }
+}
+
+// Função para ordenar por ID
+
+produto ordenacaoProdId(int p, produto prod[]){
+    int i = 0, j = 0, auxQtd, auxId;
+    char aux[NOME];
+    float auxPreco;
+
+    for (i = 0; i < p; i++){
+        for(j = i + 1; j < p; j++){
+            if(prod[i].id > prod[j].id){
+                strcpy(aux,prod[j].nome);
+                strcpy(prod[j].nome,prod[i].nome);
+                strcpy(prod[i].nome,aux);
+                auxId = prod[j].id;
+                prod[j].id = prod[i].id;
+                prod[i].id = auxId;
+                auxPreco = prod[j].preco;
+                prod[j].preco = prod[i].preco;
+                prod[i].preco = auxPreco;
+                auxQtd = prod[j].qtd;
+                prod[j].qtd = prod[i].qtd;
+                prod[i].qtd = auxQtd;
+            }
+        }
+    }
+     for (i = 0; i < p; i++){
+        printf("Id %10.d | Nome: %s | R$ %10.2f | %10.d uni\n", prod[i].id, prod[i].nome, prod[i].preco, prod[i].qtd);
+    }
+}
+
