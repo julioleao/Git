@@ -1,6 +1,5 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <locale.h>
 #include <string.h>
 
 #define ID 10
@@ -32,26 +31,9 @@ typedef struct nota{
     int qtd;
 }nota;
 
-// Deaclaração de funçõe
+// Deaclaração de funções
+
 produto cadastrarProduto(produto prod[], int p);
-<<<<<<< HEAD
-produto consultarProduto(char nome[], produto prod[], int *pp);
-produto consultarProdutoId(int id, produto prod[], int *pp);
-produto excluirProduto(int i, produto prod[], int **ppp);
-int validarCpf(int c, cliente cl[]);
-cliente cadastrarCliente(int c, cliente cl[]);
-cliente consultarCliente(char nomeCl[], cliente cl[]);
-cliente consultarClienteId(int id, cliente cl[]);
-produto ordenacaoProd(int p, produto prod[]);
-cliente ordenacaoCl(int c, cliente cl[]);
-<<<<<<< HEAD
-=======
-nota notaFiscal(int p, int n, int id, int idPrd, int qtd, produto prod[], nota nf[]);
-nota consultarNf(nota nf[], int n);
-produto ordenacaoProdId(int p, produto prod[]);
-void venda(int n, nota nf[], int c, int p, produto vetProd[], int id, int idPrd, int qtd);
->>>>>>> fabdd12746184fe7bf0ba33ecb3d58c8ef6360a1
-=======
 produto consultarProduto(int p, char nome[], produto prod[]);
 produto consultarProdutoId(int p, int id, produto prod[]);
 int validarCpf(int c, cliente cl[]);
@@ -64,22 +46,12 @@ nota notaFiscal(int p, int n, int id, int idPrd, int qtd, produto prod[], nota n
 nota consultarNf(nota nf[], int n);
 produto ordenacaoProdId(int p, produto prod[]);
 void venda(int n, nota nf[], int c, int p, produto vetProd[], int id, int idPrd, int qtd, cliente cl[]);
->>>>>>> 04cb62cf815744acde667ac5f1285cc7567c83bf
 
 // Função principal
 
 int main() {
     produto vetProd[50];
-    setlocale(LC_ALL,"portuguese");
     cliente cl[20];
-<<<<<<< HEAD
-<<<<<<< HEAD
-    nota nf;
-    int op = 0, x = 1, i = 0, consProd = 0, consCl = 0, p = 0, *pp = &p,id = 0, c = 0, opVenda = 0;
-    char opProd, opCl, nomeProd[NOME], nomeCl[NOME], cpf[12];setlocale(LC_ALL,"portuguese");
-=======
-=======
->>>>>>> 04cb62cf815744acde667ac5f1285cc7567c83bf
     nota nf[100];
 
     /*  Variaveis
@@ -97,7 +69,6 @@ int main() {
 
     int op = 0, id = 0, idPrd = 0, consProd = 0, consCl = 0, p = 0, c = 0, n = 0, opVenda = -1, qtd = 0;
     char opProd, opCl, nomeProd[NOME], nomeCl[NOME], cpf[12];
->>>>>>> fabdd12746184fe7bf0ba33ecb3d58c8ef6360a1
 
     // Menu de opções principal
     while (op != 8){
@@ -139,7 +110,6 @@ int main() {
                                 printf("Opcao invalida!\n\n");
                                 printf("\nPressione ENTER para voltar.");
                                 getchar();
-                                system("cls");
                             }
                     } else {
                         printf("Atingido a quantidade maxima de cadastro.\nFavor volte e exclua algum produto pelo menu:\n3 - Listar todos os produtos\n");
@@ -162,25 +132,19 @@ int main() {
                         printf("Digite o nome: ");
                         gets(nomeProd);
                         system("cls");
-<<<<<<< HEAD
-                        consultarProduto(nomeProd, vetProd, &p);
-=======
                         consultarProduto(c, nomeProd, vetProd);
                         printf("\n\nDigite ENTER para voltar.");
                         getchar();
->>>>>>> 04cb62cf815744acde667ac5f1285cc7567c83bf
                         system("cls");
                     } else
                         if (consProd == 2) {
                             printf("Digite o ID: ");
                             scanf("%d", &id);
                             system("cls");
-<<<<<<< HEAD
-                            consultarProdutoId(id, vetProd, &p);
-=======
                             consultarProdutoId(p, id, vetProd);
->>>>>>> 04cb62cf815744acde667ac5f1285cc7567c83bf
                             fflush(stdin);
+                            printf("\n\nPressione ENTER para voltar.");
+                            getchar();
                             system("cls");
                         } else
                             if (consProd == 3){
@@ -296,70 +260,20 @@ int main() {
 
             // Realizar venda
             case 7 :
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
                 opVenda = -1;
->>>>>>> fabdd12746184fe7bf0ba33ecb3d58c8ef6360a1
-=======
-                opVenda = -1;
->>>>>>> 04cb62cf815744acde667ac5f1285cc7567c83bf
                 while(opVenda < 0){
                     printf("1 - Realizar vendas\n");
                     printf("2 - Consultar NFs\n");
                     printf("3 - Consultar estoque\n");
                     printf("4 - Consultar cliente\n");
                     printf("5 - Voltar\n");
-<<<<<<< HEAD
-<<<<<<< HEAD
-                    printf("Informe a opaco desejada: ");
-                    scanf("%d", &opVenda);
-
-                    if(opVenda == 1){
-
-                    } else
-                        if(opVenda == 2){
-
-                        } else
-                            if(opVenda == 3){
-                                ordenacaoProd(p, vetProd);
-                                printf("\nPressione ENTER para voltar.");
-                                getchar();
-                                system("cls");
-                            } else
-                                if (opVenda == 4){
-                                    ordenacaoCl(c, cl);
-                                    printf("\nPressione ENTER para voltar.");
-                                    getchar();
-                                    system("cls");
-                                    break;
-                                } else
-                                    if (opVenda == 5){
-                                        break;
-                                    } else {
-                                        printf("\nOpcao invalida!\n\n");
-                                        printf("\nPressione ENTER para voltar.");
-                                        getchar();
-                                        system("cls");
-                                    }
-
-
-=======
-=======
->>>>>>> 04cb62cf815744acde667ac5f1285cc7567c83bf
                     printf("\nInforme a opcao desejada: ");
                     scanf("%d", &opVenda);
                     fflush(stdin);
                     system("cls");
 
                     if(opVenda == 1){
-<<<<<<< HEAD
-                        ordenacaoCl(c, cl);
-                        ordenacaoProdId(p, vetProd);
-                        venda(n, nf, c, p, vetProd, id, idPrd, qtd);
-=======
                         venda(n, nf, c, p, vetProd, id, idPrd, qtd, cl);
->>>>>>> 04cb62cf815744acde667ac5f1285cc7567c83bf
 
                         n++;
                         opVenda = -1;
@@ -398,10 +312,6 @@ int main() {
                                     }
 
 
-<<<<<<< HEAD
->>>>>>> fabdd12746184fe7bf0ba33ecb3d58c8ef6360a1
-=======
->>>>>>> 04cb62cf815744acde667ac5f1285cc7567c83bf
                 }
                 break;
 
@@ -440,93 +350,24 @@ produto cadastrarProduto(produto prod[], int p){
 
 // Função para consultar produto por nome
 
-<<<<<<< HEAD
-produto consultarProduto(char nome[], produto prod[], int *pp){
-    int i, cont = 0, **ppp = &pp;
-    char resp;
-    for(i = 0; i < 50; i++){
-=======
 produto consultarProduto(int p, char nome[], produto prod[]){
     int i = 0;
     for(i = 0; i < p; i++){
->>>>>>> 04cb62cf815744acde667ac5f1285cc7567c83bf
         if(strcmp(nome,prod[i].nome) == 0){
-            cont += 1;
-            excluirProduto(i, prod, &pp);
+            printf("Id %10.d | Nome: %s | R$ %10.2f | %10.d uni\n", prod[i].id, prod[i].nome, prod[i].preco, prod[i].qtd);
         }
-    }
-    if (cont < 1){
-        do{
-            printf("Produto não encontrado!\n");
-            printf("1 - Voltar.");
-            resp = getch();
-        }while(resp != '1');
     }
 }
 
-
 // Função para consultar produto por ID
 
-<<<<<<< HEAD
-produto consultarProdutoId(int id, produto prod[], int *pp){
-    int i = 0, cont = 0, **ppp = &pp;
-    char resp;
-    for(i = 0; i < 50; i++){
-            if(id == prod[i].id){
-                cont += 1;
-                excluirProduto(i,prod,&pp);
-=======
 produto consultarProdutoId(int p, int id, produto prod[]){
     int i = 0;
     for(i = 0; i < p; i++){
         if(id == prod[i].id){
             printf("Id %10.d | Nome: %s | R$ %10.2f | %10.d uni\n", prod[i].id, prod[i].nome, prod[i].preco, prod[i].qtd);
->>>>>>> 04cb62cf815744acde667ac5f1285cc7567c83bf
         }
     }
-    if (cont < 1){
-        do{
-            printf("Produto não encontrado!\n");
-            printf("1 - Voltar.");
-            resp = getch();
-        }while(resp != '1');
-    }
-}
-
-//Função para excluir Produtos
-
-produto excluirProduto(int i, produto prod[], int **ppp){
-    char resp;
-    do{
-        system("cls");
-        printf("Id %10.d | Nome: %s | R$ %10.2f | %10.d uni\n", prod[i].id, prod[i].nome, prod[i].preco, prod[i].qtd);
-        printf("\n1 - Excluir Produto.");
-        printf("\n2 - Voltar.");
-        resp = getch();
-        if (resp == '1'){
-            do{
-                system("cls");
-                printf("Após excluir o produto você não poderá recupera-lo, deseja continuar?\n1 - Sim.\n2 - Não.");
-                resp = getch();
-                }while(resp != '1' && resp != '2');
-                    if (resp == '1'){
-                        prod[i].id = prod[**ppp - 1].id;
-                        strcpy(prod[i].nome, prod[**ppp - 1].nome);
-                        prod[i].preco = prod[**ppp - 1].preco;
-                        prod[i].qtd = prod[**ppp - 1].qtd;
-                        **ppp -= 1;
-                        do{
-                            system("cls");
-                            printf("\nProduto excluído com sucesso!");
-                            printf("\n1 - voltar.");
-                            resp = getch();
-                        }while(resp != '1');
-                    }
-                }else
-                if (resp == '2'){
-                    break;
-                }
-    }while(resp != '1');
 }
 
 // Função para Cadastrar Cliente
@@ -672,26 +513,6 @@ cliente ordenacaoCl(int c, cliente cl[]){
         printf("Id %10.d | Nome: %s | CPF %s\n", cl[i].id, cl[i].nome, cl[i].cpf);
     }
 }
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-
-// Função para vendas
-
-void venda(int n, nota nf[], int c, int p, produto vetProd[], int id, int idPrd, int qtd){
-
-    do{
-        printf("\n\nInforme o id do cliente: ");
-        scanf("%d", &id);
-    }while(id < 1 && id >= c);
-
-    system("cls");
-
-    do{
-        printf("\n\nInforme o id do produto: ");
-        scanf("%d", &idPrd);
-    }while (idPrd < 1 && idPrd >= p);
-=======
 
 // Função para vendas
 
@@ -709,17 +530,12 @@ void venda(int n, nota nf[], int c, int p, produto vetProd[], int id, int idPrd,
         printf("\nInforme o id do produto: ");
         scanf("%d", &idPrd);
     }while (idPrd < 1 || idPrd > p);
->>>>>>> 04cb62cf815744acde667ac5f1285cc7567c83bf
 
     do{
         printf("Informe a quantidade desejada: ");
         scanf("%d", &qtd);
     } while (qtd > vetProd[idPrd - 1].qtd);
-<<<<<<< HEAD
-
-=======
     vetProd[idPrd - 1].qtd = vetProd[idPrd - 1].qtd - qtd;
->>>>>>> 04cb62cf815744acde667ac5f1285cc7567c83bf
     notaFiscal(p, n, id, idPrd, qtd, vetProd, nf);
 }
 
@@ -780,8 +596,3 @@ produto ordenacaoProdId(int p, produto prod[]){
         printf("Id %10.d | Nome: %s | R$ %10.2f | %10.d uni\n", prod[i].id, prod[i].nome, prod[i].preco, prod[i].qtd);
     }
 }
-
-<<<<<<< HEAD
->>>>>>> fabdd12746184fe7bf0ba33ecb3d58c8ef6360a1
-=======
->>>>>>> 04cb62cf815744acde667ac5f1285cc7567c83bf
