@@ -48,8 +48,10 @@ cliente ordenacaoCl(int c, cliente cl[]);
 nota notaFiscal(int p, int n, int id, int idPrd, int qtd, produto prod[], nota nf[]);
 nota consultarNf(nota nf[], int n);
 produto ordenacaoProdId(int p, produto prod[]);
-void venda(int n, nota nf[], int c, int p, produto vetProd[], int id, int idPrd, int qtd, cliente cl[]);
+void venda(int n, nota nf[], int c, int p, int id, int idPrd, produto vetProd[], int qtd, cliente cl[]);
 int validarStrings(char nome[]);
+int validarInteiro(char numero[]);
+float validarFloat(char numero[]);
 
 // Função principal
 
@@ -72,7 +74,7 @@ int main() {
     idPrd: Consultar ID de produto  */
 
     int op = 0, id = 0, idPrd = 0, consProd = 0, consCl = 0, p = 0, *pp = &p, c = 0, *cc = &c, n = 0, opVenda = -1, qtd = 0;
-    char opProd, opCl, nomeProd[NOME], nomeCl[NOME], cpf[12];
+    char opProd, opCl, nomeProd[NOME], nomeCl[NOME], cpf[12], idVendaP[51], idVendaC[21];
 
     // Menu de opções principal
     while (op != 8){
@@ -100,8 +102,11 @@ int main() {
                         cadastrarProduto(vetProd,p);
                         p ++;
                         fflush(stdin);
+
                         printf("\nDeseja cadastrar outro produto? S/N\n");
-                        opProd = getche();
+                        do{
+                            opProd = getch();
+                        }while(opProd != 'S' && opProd != 'N' && opProd != 's' && opProd != 'n');
                         system("cls");
                         if (opProd == 'S' || opProd == 's'){
 
@@ -264,7 +269,7 @@ int main() {
                     system("cls");
 
                     if(opVenda == 1){
-                        venda(n, nf, c, p, vetProd, id, idPrd, qtd, cl);
+                        venda(n, nf, c, p, id, idPrd, vetProd, qtd, cl);
 
                         n++;
                         opVenda = -1;
@@ -326,6 +331,9 @@ int main() {
 
 produto cadastrarProduto(produto prod[], int p){
     int i = 0;
+    char qtd[10], preco[10];
+    float x;
+
 
     for(i = p; i < 50; i++){
         prod[i].id = p + 1;
@@ -335,10 +343,18 @@ produto cadastrarProduto(produto prod[], int p){
             printf("Digite o nome: ");
             gets(prod[i].nome);
         } while (validarStrings(prod[i].nome) == 0);
+
         printf("Informe o preco: R$ ");
-        scanf("%f", &prod[i].preco);
+        do{
+            gets(preco);
+            prod[i].preco = atof(preco);
+        } while (validarFloat(preco) == 0);
+
         printf("Informe a quantidade: ");
-        scanf("%d", &prod[i].qtd);
+        do{
+            gets(qtd);
+        }while(validarInteiro(qtd) == 0);
+        prod[i].qtd = atoi(qtd);
         break;
     }
 }
@@ -643,25 +659,38 @@ cliente ordenacaoCl(int c, cliente cl[]){
 
 // Função para vendas
 
-void venda(int n, nota nf[], int c, int p, produto vetProd[], int id, int idPrd, int qtd, cliente cl[]){
+void venda(int n, nota nf[], int c, int p, int id, int idPrd, produto vetProd[], int qtd, cliente cl[]){
+    char idVendaC[21], idVendaP[51];
+
     system("cls");
     ordenacaoCl(c, cl);
+
+    printf("\nInforme o id do cliente: ");
     do{
-        printf("\nInforme o id do cliente: ");
-        scanf("%d", &id);
+        do{
+            gets(idVendaC);
+        } while(validarInteiro(idVendaC) == 0);
+        id = atoi(idVendaC);
     }while(id < 1 || id > c);
+
 
     system("cls");
     ordenacaoProdId(p, vetProd);
-    do{
-        printf("\nInforme o id do produto: ");
-        scanf("%d", &idPrd);
-    }while (idPrd < 1 || idPrd > p);
 
+    printf("\nInforme o id do produto: ");
     do{
+        do{
+            gets(idVendaP);
+        } while(validarInteiro(idVendaP) == 0);
+        idPrd = atoi(idVendaP);
+    } while (idPrd < 1 || idPrd > p);
+
+
         printf("Informe a quantidade desejada: ");
+    do{
         scanf("%d", &qtd);
     } while (qtd > vetProd[idPrd - 1].qtd);
+    system("cls");
     vetProd[idPrd - 1].qtd = vetProd[idPrd - 1].qtd - qtd;
     notaFiscal(p, n, id, idPrd, qtd, vetProd, nf);
 }
@@ -738,4 +767,28 @@ int validarStrings(char nome[]){
         }
     }
     return cont;
+}
+
+// Função para validar Inteiros
+
+int validarInteiro(char numero[]){
+    int i;
+    for(i = 0; i < strlen(numero); i++){
+        if(!(isdigit(numero[i]))){
+            return 0;
+        }
+    }
+    return 1;
+}
+
+// Função para validar Float
+
+float validarFloat(char numero[]){
+    int i;
+    for(i = 0; i < strlen(numero); i++){
+        if(!(isdigit(numero[i])) && numero[i] != ','){
+            return 0;
+        }
+    }
+    return 1;
 }
