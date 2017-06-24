@@ -456,7 +456,7 @@ produto excluirProduto(int i, produto prod[], int **ppp){
 // Função para Cadastrar Cliente
 
 cliente cadastrarCliente(int c, cliente cl[]){
-    int i = 0;
+    int i = 0, v, f;
 
     for(i = c; i < 50; i++){
         cl[i].id = c + 1;
@@ -468,15 +468,22 @@ cliente cadastrarCliente(int c, cliente cl[]){
         } while (validarStrings(cl[i].nome) == 0);
         do{
             printf("Informe o CPF: ");
+            fflush(stdin);
             fgets(cl[c].cpf,12,stdin);
+            f=0;
+            for(v=c-1;v>=0;v--){
+                if(strcmp(cl[v].cpf,cl[c].cpf) == 0){
+                    f=1;
+                }
+            }
             validarCpf(c,cl);
-            if(validarCpf(c,cl) != 1){
+            if((validarCpf(c,cl) != 1) || (f==1)){
                 printf("CPF invalido!\nDigite novamente\n\n");
             } else {
                 printf("CPF valido!\n\n");
                 break;
             }
-        }while(validarCpf(c,cl) != 1);
+        }while((validarCpf(c,cl) != 1) || (f==1));
         break;
     }
 }
