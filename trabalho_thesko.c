@@ -330,7 +330,7 @@ int main() {
 // Função para cadastrar produto
 
 produto cadastrarProduto(produto prod[], int p){
-    int i = 0;
+    int i, j, rep = 0;
     char qtd[10], preco[10];
     float x;
 
@@ -339,10 +339,22 @@ produto cadastrarProduto(produto prod[], int p){
         prod[i].id = p + 1;
         fflush(stdin);
         do{
-            system("cls");
-            printf("Digite o nome: ");
-            gets(prod[i].nome);
-        } while (validarStrings(prod[i].nome) == 0);
+            rep = 0;
+            do{
+                system("cls");
+                printf("Digite o nome: ");
+                gets(prod[i].nome);
+            } while (validarStrings(prod[i].nome) == 0);
+
+            for(j = 0; j < i; j++){
+                if (strcmp(prod[i].nome, prod[j].nome) == 0){
+                printf("Produto já cadastrado.\n");
+                printf("\n\nDigite ENTER para voltar.");
+                getchar();
+                rep += 1;
+                }
+            }
+        }while(rep != 0);
 
         printf("Informe o preco: R$ ");
         do{
