@@ -49,6 +49,7 @@ nota notaFiscal(int p, int n, int id, int idPrd, int qtd, produto prod[], nota n
 nota consultarNf(nota nf[], int n);
 produto ordenacaoProdId(int p, produto prod[]);
 void venda(int n, nota nf[], int c, int p, produto vetProd[], int id, int idPrd, int qtd, cliente cl[]);
+int validarStrings(char nome[]);
 
 // Função principal
 
@@ -132,12 +133,13 @@ int main() {
                     fflush(stdin);
 
                     if (consProd == 1) {
-                        printf("Digite o nome: ");
-                        gets(nomeProd);
+                        do{
+                            system("cls");
+                            printf("Digite o nome: ");
+                            gets(nomeProd);
+                        }while (validarStrings(nomeProd) == 0);
                         system("cls");
                         consultarProduto(p, nomeProd, vetProd, &p);
-                        printf("\n\nDigite ENTER para voltar.");
-                        getchar();
                         system("cls");
                     } else
                         if (consProd == 2) {
@@ -146,8 +148,6 @@ int main() {
                             system("cls");
                             consultarProdutoId(p, id, vetProd, &p);
                             fflush(stdin);
-                            printf("\n\nPressione ENTER para voltar.");
-                            getchar();
                             system("cls");
                         } else
                             if (consProd == 3){
@@ -174,35 +174,27 @@ int main() {
                 while (c < 20){
                     if(c < 20){
                         cadastrarCliente(c, cl);
-                        while(c > -1){
-                            printf("Informe o CPF: ");
-                            fgets(cl[c].cpf,12,stdin);
-                            validarCpf(c,cl);
-                            if(validarCpf(c,cl) != 1){
-                                printf("CPF invalido!\nDigite novamente\n\n");
-                            } else {
-                                printf("CPF valido!\n\n");
-                                break;
-                            }
-                        }
                         c ++;
                         fflush(stdin);
 
                             printf("\nDeseja cadastrar outro cliente? S/N\n");
-                            opCl = getche();
-                        if (opCl == 'S' || opCl == 's'){
+                        do{
+                            opCl = getch();
+                        } while (opCl != 'S' && opCl != 'N' && opCl != 's' && opCl != 'n');
+                            if (opCl == 'S' || opCl == 's'){
+                                system("cls");
+                            } else
+                                if (opCl == 'N' || opCl == 'n'){
+                                    system("cls");
+                                    break;
+                                } else {
+                                    system("cls");
+                                    printf("Opcao invalida!\n\n");
+                                    printf("\nPressione ENTER para voltar.");
+                                    getchar();
+                                    system("cls");
+                                }
 
-                        } else
-                            if (opCl == 'N' || opCl == 'n'){
-                                system("cls");
-                                break;
-                            } else {
-                                system("cls");
-                                printf("Opcao invalida!\n\n");
-                                printf("\nPressione ENTER para voltar.");
-                                getchar();
-                                system("cls");
-                            }
                     } else {
                         printf("Atingido a quantidade maxima de cadastro.\nFavor volte e exclua algum cliente\n");
                     }
@@ -221,12 +213,13 @@ int main() {
                     fflush(stdin);
 
                     if (consCl == 1) {
-                        printf("Digite o nome: ");
-                        gets(nomeCl);
+                        do{
+                            system("cls");
+                            printf("Digite o nome: ");
+                            gets(nomeCl);
+                        }while (validarStrings(nomeCl) == 0);
                         system("cls");
                         consultarCliente(c, nomeCl, cl, &c);
-                        printf("\n\nDigite ENTER para voltar.");
-                        getchar();
                         system("cls");
                     } else
                         if (consCl == 2) {
@@ -235,8 +228,6 @@ int main() {
                             system("cls");
                             consultarClienteId(c, id, cl, &c);
                             fflush(stdin);
-                            printf("\n\nPressione ENTER para voltar.");
-                            getchar();
                             system("cls");
                         } else
                             if (consCl == 3){
@@ -322,7 +313,8 @@ int main() {
 
             default :
                 printf("\nOpcao invalida!\n\n");
-                system("pause");
+                printf("Digite ENTER para voltar.");
+                getchar();
                 break;
         }
     }
@@ -338,8 +330,11 @@ produto cadastrarProduto(produto prod[], int p){
     for(i = p; i < 50; i++){
         prod[i].id = p + 1;
         fflush(stdin);
-        printf("Digite o nome: ");
-        gets(prod[i].nome);
+        do{
+            system("cls");
+            printf("Digite o nome: ");
+            gets(prod[i].nome);
+        } while (validarStrings(prod[i].nome) == 0);
         printf("Informe o preco: R$ ");
         scanf("%f", &prod[i].preco);
         printf("Informe a quantidade: ");
@@ -360,11 +355,9 @@ produto consultarProduto(int p, char nome[], produto prod[], int *pp){
         }
     }
     if (cont < 1){
-        do{
-            printf("Produto não encontrado!\n");
-            printf("1 - Voltar.");
-            resp = getch();
-        }while(resp != '1');
+        printf("Produto não encontrado!\n");
+        printf("\n\nDigite ENTER para voltar.");
+        getchar();
     }
 }
 
@@ -379,12 +372,11 @@ int i, cont = 0, **ppp = &pp;
             excluirProduto(i, prod, &pp);
         }
     }
+    fflush(stdin);
     if (cont < 1){
-        do{
-            printf("Produto não encontrado!\n");
-            printf("1 - Voltar.");
-            resp = getch();
-        }while(resp != '1');
+        printf("Produto não encontrado!\n");
+        printf("\n\nDigite ENTER para voltar.");
+        getchar();
     }
 }
 
@@ -442,9 +434,22 @@ cliente cadastrarCliente(int c, cliente cl[]){
     for(i = c; i < 50; i++){
         cl[i].id = c + 1;
         fflush(stdin);
-        printf("Digite o nome: ");
-        gets(cl[i].nome);
-
+        do{
+            system("cls");
+            printf("Digite o nome: ");
+            gets(cl[i].nome);
+        } while (validarStrings(cl[i].nome) == 0);
+        do{
+            printf("Informe o CPF: ");
+            fgets(cl[c].cpf,12,stdin);
+            validarCpf(c,cl);
+            if(validarCpf(c,cl) != 1){
+                printf("CPF invalido!\nDigite novamente\n\n");
+            } else {
+                printf("CPF valido!\n\n");
+                break;
+            }
+        }while(validarCpf(c,cl) != 1);
         break;
     }
 }
@@ -507,11 +512,9 @@ cliente consultarCliente(int c, char nomeCl[], cliente cl[], int *cc){
         }
     }
     if (cont < 1){
-        do{
-            printf("Cliente não encontrado!\n");
-            printf("1 - Voltar.");
-            resp = getch();
-        }while(resp != '1');
+        printf("Cliente não encontrado!\n");
+        printf("\nDigite ENTER para voltar.");
+        getchar();
     }
 }
 
@@ -526,12 +529,11 @@ cliente consultarClienteId(int c, int id, cliente cl[], int *cc){
             excluirCliente(i, cl, &cc);
         }
     }
+    fflush(stdin);
     if (cont < 1){
-        do{
-            printf("Cliente não encontrado!\n");
-            printf("1 - Voltar.");
-            resp = getch();
-        }while(resp != '1');
+        printf("Cliente não encontrado!\n");
+        printf("\nDigite ENTER para voltar.");
+        getchar();
     }
 }
 
@@ -722,3 +724,18 @@ produto ordenacaoProdId(int p, produto prod[]){
     }
 }
 
+// Função para validar Strings
+
+int validarStrings(char nome[]){
+    int i = 0, cont = 0;
+
+    for(i = 0; nome[i] != '\0'; i++){
+        if(nome[i] >= 65 && nome[i] <= 90 || nome[i] >= 97 && nome[i] <= 122){
+            cont ++;
+        } else {
+            cont = 0;
+            break;
+        }
+    }
+    return cont;
+}
