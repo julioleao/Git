@@ -332,8 +332,6 @@ int main() {
 produto cadastrarProduto(produto prod[], int p){
     int i, j, rep = 0;
     char qtd[10], preco[10];
-    float x;
-
 
     for(i = p; i < 50; i++){
         prod[i].id = p + 1;
@@ -673,6 +671,7 @@ cliente ordenacaoCl(int c, cliente cl[]){
 
 void venda(int n, nota nf[], int c, int p, int id, int idPrd, produto vetProd[], int qtd, cliente cl[]){
     char idVendaC[21], idVendaP[51];
+    int x = 0;
 
     system("cls");
     ordenacaoCl(c, cl);
@@ -684,7 +683,6 @@ void venda(int n, nota nf[], int c, int p, int id, int idPrd, produto vetProd[],
         } while(validarInteiro(idVendaC) == 0);
         id = atoi(idVendaC);
     }while(id < 1 || id > c);
-
 
     system("cls");
     ordenacaoProdId(p, vetProd);
@@ -701,6 +699,9 @@ void venda(int n, nota nf[], int c, int p, int id, int idPrd, produto vetProd[],
         printf("Informe a quantidade desejada: ");
     do{
         scanf("%d", &qtd);
+        if (qtd > vetProd[idPrd - 1].qtd){
+            printf("\nQuantidade insuficiente\n");
+        }
     } while (qtd > vetProd[idPrd - 1].qtd);
     system("cls");
     vetProd[idPrd - 1].qtd = vetProd[idPrd - 1].qtd - qtd;
