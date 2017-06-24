@@ -357,8 +357,9 @@ produto cadastrarProduto(produto prod[], int p){
         printf("Informe o preco: R$ ");
         do{
             gets(preco);
-            prod[i].preco = atof(preco);
         } while (validarFloat(preco) == 0);
+
+        prod[i].preco = atof(preco);
 
         printf("Informe a quantidade: ");
         do{
